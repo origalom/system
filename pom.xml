@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.springhub</groupId>
+    <artifactId>system</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <description>基于spring的整合比较好用的工具类、其他系统集成等等</description>
+
+    <properties>
+
+    </properties>
+
+    <!--    指定仓库私库地址  -->
+    <distributionManagement>
+        <repository>
+            <!--此名称要和.m2/settings.xml中设置的ID一致-->
+            <id>ahbr</id>
+            <url>http://maven.springhub.cn/repository/ahbr/</url>
+        </repository>
+    </distributionManagement>
+
+    <dependencyManagement>
+
+    </dependencyManagement>
+
+</project>
