@@ -14,14 +14,6 @@
 
     </properties>
 
-    <!--    指定仓库私库地址  -->
-    <distributionManagement>
-        <repository>
-            <!--此名称要和.m2/settings.xml中设置的ID一致-->
-            <id>ahbr</id>
-            <url>http://maven.springhub.cn/repository/ahbr/</url>
-        </repository>
-    </distributionManagement>
 
     <dependencyManagement>
 
