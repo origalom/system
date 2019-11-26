@@ -8,12 +8,18 @@ package cn.springhub.constant;
  **/
 public enum Code implements Constant<Integer> {
 
+    OK(0, "请求正常")
+    , ERROR(-1, "系统中未捕获的异常")
+
     ;
 
     private Integer code;
 
-    Code(int code) {
+    private String desc;
+
+    Code(int code, String desc) {
         this.code = code;
+        this.desc = desc;
     }
 
     @Override
