@@ -11,6 +11,9 @@ public enum Code implements Constant<Integer> {
     OK(0, "请求正常")
     , ERROR(-1, "系统中未捕获的异常")
 
+    , PARMAS_TYPE_ERROR(1000, "参数格式有误")
+    , PARAMS_ASSERT_ERROR(1001, "参数认证失败")
+
     ;
 
     private Integer code;
@@ -25,5 +28,10 @@ public enum Code implements Constant<Integer> {
     @Override
     public Integer getValue() {
         return code;
+    }
+
+    @Override
+    public String getDescription() {
+        return desc;
     }
 }

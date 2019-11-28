@@ -9,4 +9,6 @@ package cn.springhub.constant;
 public interface Constant<T> {
 
     T getValue();
+
+    String getDescription();
 }
