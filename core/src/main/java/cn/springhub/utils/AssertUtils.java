@@ -1,6 +1,7 @@
 package cn.springhub.utils;
 
 import cn.springhub.constant.Code;
+import cn.springhub.constant.SystemConstant;
 import cn.springhub.exception.AssertFailedException;
 
 /**
@@ -17,15 +18,23 @@ public class AssertUtils {
      *  断言参数为null
      * @param obj
      */
-    public static void isNotNull(Object obj) {
+    public static void isNotNull(Object obj, String mmessage) {
         if(obj == null) {
-            assertFailed("参数[" + obj + "]不为空" , null);
+            assertFailed(mmessage);
         }
     }
 
-
-    protected static void assertFailed(String message, AssertFailedException exception) {
-        if(exception == null) {
+    /**
+     *  统一异常抛出
+     * @param message
+     */
+    protected static void assertFailed(String message) {
+        AssertFailedException exception;
+        // 查看本地是否存在定义的异常
+        Object obj = Locale.get(SystemConstant.SYSTEM_ASSERT_ERROR);
+        if(obj != null && obj instanceof AssertFailedException) {
+            exception = (AssertFailedException) obj;
+        } else {
             // 异常为空时，自定义一个参数异常
             exception = new AssertFailedException(message, Code.PARAMS_ASSERT_ERROR);
         }

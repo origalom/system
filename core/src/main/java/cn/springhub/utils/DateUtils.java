@@ -25,4 +25,22 @@ public class DateUtils {
         return dateType.convertDateToString(date);
     }
 
+    /**
+     *  获取当前时间字符串
+     * @return
+     */
+    public static String getCurrentDate() {
+        return getDate(new Date(), DateType.DATE_TIME);
+    }
+
+    /**
+     *  将时间字符串转换成时间格式
+     * @param date  时间字符串
+     * @param dateType  时间格式
+     * @return
+     */
+    public static Date getDate(String date, DateType dateType) {
+        return dateType.convertStringToDate(date);
+    }
+
 }
