@@ -10,6 +10,8 @@
 
     <modules>
         <module>core</module>
+        <module>redis</module>
+        <module>redis</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -18,15 +20,30 @@
     <properties>
         <java.version>1.8</java.version>
         <project.release.version>1.0-SNAPSHOT</project.release.version>
+        <redis.version>3.1.0</redis.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!--     自动set get   -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.16.22</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <!--  redis连接jar包  -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${redis.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.springhub</groupId>
+                <artifactId>core</artifactId>
+                <version>1.0-RELEASE</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

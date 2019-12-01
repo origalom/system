@@ -9,18 +9,33 @@ package cn.springhub.constant;
 public enum SystemConstant implements Constant<String> {
 
     SYSTEM_ASSERT_ERROR
+    , COMMA(",", "逗号")
+    , COLON(":", "冒号")
     ;
 
+    private String value;
 
+    private String msg;
 
+    SystemConstant() {
+    }
+
+    SystemConstant(String value) {
+        this.value = value;
+    }
+
+    SystemConstant(String value, String msg) {
+        this.value = value;
+        this.msg = msg;
+    }
 
     @Override
     public String getValue() {
-        return null;
+        return this.value;
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return this.msg;
     }
 }

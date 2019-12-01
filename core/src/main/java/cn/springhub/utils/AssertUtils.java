@@ -1,6 +1,7 @@
 package cn.springhub.utils;
 
 import cn.springhub.constant.Code;
+import cn.springhub.constant.Regex;
 import cn.springhub.constant.SystemConstant;
 import cn.springhub.exception.AssertFailedException;
 
@@ -21,6 +22,33 @@ public class AssertUtils {
     public static void isNotNull(Object obj, String mmessage) {
         if(obj == null) {
             assertFailed(mmessage);
+        }
+    }
+
+    /**
+     *  断言数组长度
+     * @param array 数组
+     * @param length    长度
+     */
+    public static void arrayLengthIsTrue(Object[] array, int length, String message) {
+        if(array == null || array.length != length) {
+            assertFailed(message);
+        }
+    }
+
+    /**
+     *  判断数据是整数
+     * @param obj       参数
+     */
+    public static void isNumber(Object obj, String message) {
+        isNotNull(obj, message);
+
+        if(obj instanceof Integer) {
+            return;
+        }
+
+        if(!RegexUtils.isMatching(obj.toString(), Regex.POSITIVE_INTEGER.getValue())) {
+            assertFailed(message);
         }
     }
 
