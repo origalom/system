@@ -26,6 +26,7 @@ public class Locale {
         }
 
         map.put(key, obj);
+        local.set(map);
     }
 
     /**
@@ -36,5 +37,16 @@ public class Locale {
         Map<Constant<String>, Object> map = local.get();
 
         return map == null || map.isEmpty() ? null : map.get(key);
+    }
+
+    /**
+     *  从本地种移除数据
+     * @param key
+     */
+    public static void remove(Constant<String> key) {
+        Map<Constant<String>, Object> map = local.get();
+        if(map.containsKey(key)) {
+            map.remove(key);
+        }
     }
 }

@@ -26,6 +26,19 @@ public class AssertUtils {
     }
 
     /**
+     *  断言参数不为空
+     * @param obj
+     * @param message
+     */
+    public static void isNotEmpty(Object obj, String message) {
+        isNotNull(obj, message);
+
+        if(obj instanceof String && ((String) obj).length() == 0) {
+            assertFailed(message);
+        }
+    }
+
+    /**
      *  断言数组长度
      * @param array 数组
      * @param length    长度
