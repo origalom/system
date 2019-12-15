@@ -101,4 +101,8 @@ public class Configuration implements cn.springhub.standard.Configuration {
      */
     private boolean testWhileIdle = DEFAULT_CHECK;
 
+    /**
+     *  允许null的值，空不算
+     */
+    private boolean allowedNullValue = DEFAULT_CHECK;
 }
