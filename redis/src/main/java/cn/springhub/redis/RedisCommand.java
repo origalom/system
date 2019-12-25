@@ -21,6 +21,12 @@ public interface RedisCommand<T> {
     void close();
 
     /**
+     *  手动进行关闭连接，释放资源
+     * @return
+     */
+    RedisCommand<T> closeAutoClose();
+
+    /**
      * 设置指定key的值
      * @param key
      * @param value

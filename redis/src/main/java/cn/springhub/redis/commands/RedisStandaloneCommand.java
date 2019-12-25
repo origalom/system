@@ -9,6 +9,7 @@ import cn.springhub.utils.SerializerUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Pipeline;
 
 import java.time.Duration;
 
@@ -24,6 +25,8 @@ public class RedisStandaloneCommand implements RedisCommand<Jedis> {
     protected Jedis jedis;
 
     protected boolean allowedNullValue = false;
+
+    protected boolean autoClose = true;
 
     public RedisStandaloneCommand(JedisPoolConfig jedisPoolConfig, Configuration configuration) {
         this.jedisPool = new JedisPool(jedisPoolConfig, configuration.getHost(), configuration.getPort(), configuration.getConnectionTimeout(), configuration.getPassword());
@@ -46,6 +49,7 @@ public class RedisStandaloneCommand implements RedisCommand<Jedis> {
 
     /**
      *  释放资源
+     *  手动调用后，将自动释放资源开启
      */
     @Override
     public void close() {
@@ -53,7 +57,23 @@ public class RedisStandaloneCommand implements RedisCommand<Jedis> {
             jedis.close();
             Locale.remove(RedisConstant.REDIS_INSTANCE);
             jedis = null;
+            this.autoClose = true;
         }
+    }
+
+    /**
+     *  关闭连接
+     */
+    private void closeJedis() {
+        if(this.autoClose) {
+            close();
+        }
+    }
+
+    @Override
+    public RedisStandaloneCommand closeAutoClose() {
+        this.autoClose= false;
+        return this;
     }
 
     @Override
@@ -63,60 +83,83 @@ public class RedisStandaloneCommand implements RedisCommand<Jedis> {
 
     @Override
     public void set(Object key, Object value, Duration expire) {
-        AssertUtils.isNotEmpty(key, RedisConstant.REDIS_KEY_NOT_BE_NULL.getValue());
-        if(value == null && !allowedNullValue) {
-            // 不运行null值
-            return;
-        }
+        try {
+            AssertUtils.isNotEmpty(key, RedisConstant.REDIS_KEY_NOT_BE_NULL.getValue());
+            if (value == null && !allowedNullValue) {
+                // 不运行null值
+                return;
+            }
 
-        if(expire == null || expire.getSeconds() <= 0) {
-            // 无过期时间
-            getJedis().set(SerializerUtils.serialize(key), SerializerUtils.serialize(value));
-        } else {
-            // 有过期时间
-            getJedis().setex(SerializerUtils.serialize(key), Long.valueOf(expire.getSeconds()).intValue(), SerializerUtils.serialize(value));
+            if (expire == null || expire.getSeconds() <= 0) {
+                // 无过期时间
+                getJedis().set(SerializerUtils.serialize(key), SerializerUtils.serialize(value));
+            } else {
+                // 有过期时间
+                getJedis().setex(SerializerUtils.serialize(key), Long.valueOf(expire.getSeconds()).intValue(), SerializerUtils.serialize(value));
+            }
+        } finally {
+            closeJedis();
         }
-
-        close();
     }
 
     @Override
     public Object get(Object key) {
-        AssertUtils.isNotEmpty(key, RedisConstant.REDIS_KEY_NOT_BE_NULL.getValue());
+        try {
+            AssertUtils.isNotEmpty(key, RedisConstant.REDIS_KEY_NOT_BE_NULL.getValue());
 
-        Object obj = SerializerUtils.deSerialize(getJedis().get(SerializerUtils.serialize(key)));
-        close();
-
-        return obj;
+            Object obj = SerializerUtils.deSerialize(getJedis().get(SerializerUtils.serialize(key)));
+            return obj;
+        } finally {
+            closeJedis();
+        }
     }
 
     @Override
     public void del(Object key) {
+        try {
+            AssertUtils.isNotEmpty(key, RedisConstant.REDIS_KEY_NOT_BE_NULL.getValue());
 
+            getJedis().del(SerializerUtils.serialize(key));
+        } finally {
+            closeJedis();
+        }
     }
 
     @Override
     public boolean exist(Object key) {
-        return false;
+        try {
+            AssertUtils.isNotEmpty(key, RedisConstant.REDIS_KEY_NOT_BE_NULL.getValue());
+
+            return getJedis().exists(SerializerUtils.serialize(key));
+        } finally {
+            closeJedis();
+        }
     }
 
     @Override
     public long incr(Object key) {
-        AssertUtils.isNotEmpty(key, RedisConstant.REDIS_KEY_NOT_BE_NULL.getValue());
+        try {
+            AssertUtils.isNotEmpty(key, RedisConstant.REDIS_KEY_NOT_BE_NULL.getValue());
+            long val = getJedis().incr(SerializerUtils.serialize(key));
 
-        long val = getJedis().incr(SerializerUtils.serialize(key));
-        close();
-
-        return val;
+            return val;
+        } finally {
+            closeJedis();
+        }
     }
 
     @Override
     public long decr(Object key) {
-        AssertUtils.isNotEmpty(key, RedisConstant.REDIS_KEY_NOT_BE_NULL.getValue());
+        try {
+            AssertUtils.isNotEmpty(key, RedisConstant.REDIS_KEY_NOT_BE_NULL.getValue());
 
-        long val = getJedis().decr(SerializerUtils.serialize(key));
-        close();
+            long val = getJedis().decr(SerializerUtils.serialize(key));
 
-        return val;
+            return val;
+        } finally {
+            closeJedis();
+        }
     }
+
+
 }
