@@ -9,9 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>core</artifactId>
-    <packaging>jar</packaging>
-    <version>1.0-RELEASE</version>
-    <description>核心包，配置一些常量参数，异常相关类，实体类等</description>
+    <artifactId>algorithm</artifactId>
+    <description>算法模块，常见算法</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

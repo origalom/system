@@ -2,10 +2,8 @@ package cn.springhub.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import sun.nio.cs.UTF_8;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 
 /**
  *  序列化工具类
